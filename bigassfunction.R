@@ -40,9 +40,8 @@ estimate_gpd <- function(innovations_garch)
 ##----------------------------------------------------------------------------------------------------------##
 VAR_estimation <- function(specifications, data_1)
 {
-  VAR_results = matrix(,nrow = 0, ncol = 1)
-  roll_w <- rollapply(data_1, width = 1000,
-                              function_window = function(data_1)
+  VAR_results <- rollapply(data_1, width = 1000,
+                              FUN = function(data_1)
                               {
                                 results_data <- estimate_garch(specifications, data_1)
                                 mu <- results_data$forecast@forecast$seriesFor
@@ -58,11 +57,11 @@ VAR_estimation <- function(specifications, data_1)
                                 innovations_quantile = quantile(innovations, 0.899) + 
                                   (beta/xi)*(((1-q)*1000/100)^(-xi) -1)
                                 
-                                VAR_onestep = mu + sigma*innovations_quantile
-                                VAR_results = rbind(VAR_results, VAR_onestep)
+                                VAR_onestep <- mu + sigma*innovations_quantile
+                                return(VAR_onestep)
                                 },
                       by.column=FALSE, align="right")
-  return(VAR_results)
+  VAR_results  
 }
 ##----------------------------------------------------------------------------------------------------------##
 ##----------------------------------------------------------------------------------------------------------##
@@ -75,9 +74,10 @@ VAR_estimation <- function(specifications, data_1)
 ##Main function.
 ##----------------------------------------------------------------------------------------------------------##
 #Define specifications of the GARCH model based on the input values.
-specifications <- ugarchspec(variance.model = list(model = garch_type, garchOrder = c(arch_lag, garch_lag)),
-                             mean.model = list(armaOrder = c(ar, ma), include.mean = FALSE), 
-                             distribution.model = distribution)
+sp1 <-sp[1:1030];
+sp_garch_spec_t <- ugarchspec(variance.model = list(model = "sGARCH", garchOrder = c(1, 1)),
+                              mean.model = list(armaOrder = c(1, 0), include.mean = FALSE), distribution.model ="std")
 
+VaR_results <- VAR_estimation(specifications = sp_garch_spec_n, data_1 = sp1)
 ##----------------------------------------------------------------------------------------------------------##
 ##----------------------------------------------------------------------------------------------------------##
