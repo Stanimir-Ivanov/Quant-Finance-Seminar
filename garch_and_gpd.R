@@ -1,22 +1,4 @@
-library(xts)
 library(rugarch)
-library(zoo)
-# Import data and convert into time series format
-sp <- read.zoo("./Data/SP-500.csv", header = TRUE, sep = ",",format="%m/%d/%Y",index.column = 1)
-ing <- read.zoo("./Data/ING.csv", header = TRUE, sep = ",",format="%Y/%m/%d",index.column = 1)
-rds <- read.zoo("./Data/RDS-B.csv", header = TRUE, sep = ",",format="%Y/%m/%d",index.column = 1)
-aex <- read.zoo("./Data/AEX.csv", header = TRUE, sep = ",",format="%Y/%m/%d",index.column = 1)
-sp <- xts(sp)
-ing <- xts(ing)
-aex <-xts(aex)
-rds <- xts(rds)
-aex <-na.omit(aex) # doesnt work! 
-# Negative log returns
-sp <- - 100*diff(log(sp))
-ing <- - 100*diff(log(ing))
-rds<- - 100*diff(log(rds))
-# aex<- - 100*diff(log(aex))  needs to remove na
-
 
 #GARCH estimation 
 # GARCH with Student's t
