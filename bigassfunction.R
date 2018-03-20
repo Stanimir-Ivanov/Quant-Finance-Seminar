@@ -42,9 +42,9 @@ estimate_gpd <- function(innovations_garch)
 
     
 ##----------------------------------------------------------------------------------------------------------##
-##Function to calculate GPD distribution and quantile of innovations z.
+##Function to calculate VAR from GPD distribution and quantile of innovations z.
 ##----------------------------------------------------------------------------------------------------------##
-rolling_window <- function(garch_type, distribution, ar, ma, arch_lag, garch_lag, data_1, 
+VAR_estimation <- function(garch_type, distribution, ar, ma, arch_lag, garch_lag, data_1, 
                                    days_ahead, n_roll, n_outofsample)
 {
   VAR_results = matrix(,nrow = 0, ncol = 1)
@@ -70,6 +70,7 @@ rolling_window <- function(garch_type, distribution, ar, ma, arch_lag, garch_lag
                                 VAR_results = rbind(VAR_results, VAR_onestep)
                                 },
                       by.column=FALSE, align="right")
+  return(VAR_results)
 }
 ##----------------------------------------------------------------------------------------------------------##
 ##----------------------------------------------------------------------------------------------------------##
