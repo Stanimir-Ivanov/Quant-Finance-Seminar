@@ -16,4 +16,3 @@ sp <- - 100*diff(log(sp))
 ing <- - 100*diff(log(ing))
 rds<- - 100*diff(log(rds))
 aex<- - 100*diff(log(aex))
- 

@@ -6,10 +6,10 @@ sp <-sp[2:8406]
 sp2 <-sp[6400:7400]
 sp_garch_spec_t <- ugarchspec(variance.model = list(model = "sGARCH", garchOrder = c(1, 1)),
                     mean.model = list(armaOrder = c(1, 0)),distribution.model ="std")
-sp_garch_t1 <-ugarchfit(spec =sp_garch_spec_t ,data = sp2,solver) #fit GARCH
+sp_garch_t1 <-ugarchfit(spec =sp_garch_spec_t ,data = sp2) #fit GARCH
 
-sp_garch_t_forecast <-ugarchforecast(sp_garch_spec_t, data = sp, n.ahead = 1, n.roll = 2000,
-                                     out.sample = 2000)  # doesnt work ,later! 
+sp_garch_t_forecast <-ugarchforecast(sp_garch_t1, data = sp, n.ahead = 1, n.roll = 0,
+                                     out.sample = 0)  # doesnt work ,later! 
 
 plot(sp_garch_t1)
 plot(sp2)
