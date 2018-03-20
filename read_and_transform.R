@@ -23,7 +23,10 @@ aex$Returns <- c(-log(aex$Close[1:n-1]/aex$Close[2:n]), NA)
 
 #xts demo code
 aex_xts <- xts(x = aex$Close, order.by = aex$Date)
-
+print('hi')
+print('hi')
+print('hi')
+print('hi')
 #garch
 library(rugarch)
 T <- length(rds_b$Date)
