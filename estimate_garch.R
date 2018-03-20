@@ -3,13 +3,14 @@ estimate_garch <- function(garch_type, distribution, ar, ma, arch_lag, garch_lag
 {
   #Define specifications of the GARCH model based on the input values.
   specifications <- ugarchspec(variance.model = list(model = garch_type, garchOrder = c(arch_lag, garch_lag)),
-                               mean.model = list(armaOrder = c(ar, ma), include.mean = FALSE), distribution.model = distribution)
+                               mean.model = list(armaOrder = c(ar, ma), include.mean = FALSE), 
+                               distribution.model = distribution)
   
   #Fit the GARCH model.
-  garch_fit <- ugarchfit(spec = sepcifications, data = data_1)
+  garch_fit <- ugarchfit(spec = specifications, data = data_1)
   
   #Forecast according to the input values.
-  garch_forecast <- ugarchforecast(specifications, data = data_1, n.ahead = days_ahead, 
+  garch_forecast <- ugarchforecast(fitORspec = garch_fit, data = data_1, n.ahead = days_ahead, 
                                    n.roll = n_roll, out.sample = n_outofsample)
   
   #Return the specifications and estimation of the GARCH model.
