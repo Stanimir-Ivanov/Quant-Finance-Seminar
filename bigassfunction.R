@@ -47,16 +47,15 @@ estimate_gpd <- function(innovations_garch)
 rolling_window <- function(garch_type, distribution, ar, ma, arch_lag, garch_lag, data_1, 
                                    days_ahead, n_roll, n_outofsample)
 {
-  garch_forecasts <- matrix(,nrow = 0, ncol = 2)
+  VAR_results = matrix(,nrow = 0, ncol = 1)
   roll_w <- rollapply(data_1, width = 1000,
                               function_window = function(data_1)
                               {
-                                results_sp2 <- estimate_garch(garch_type, distribution, ar, ma, arch_lag, 
+                                results_data <- estimate_garch(garch_type, distribution, ar, ma, arch_lag, 
                                                               garch_lag, data_1, days_ahead, n_roll,
                                                               n_outofsample)
-                                
-                                garch_forecasts <- rbind(forecast_results, c(results_sp2$c@forecast$seriesFor,
-                                                                              results_sp2$c@forecast$sigmaFor))
+                                mu <- results_data$c@forecast$seriesFor
+                                sigma <- results_data$c@forecast$sigmaFor
                                 
                                 GPD_dist <- estimate_gpd(results_sp2$b@fit$z)
                                 GPD_coef <- GPD_dist$results$par
@@ -66,26 +65,23 @@ rolling_window <- function(garch_type, distribution, ar, ma, arch_lag, garch_lag
                                 xi <- GPD_coef[2]
                                 innovations_quantile = quantile(res_garch,0.899) + 
                                   (beta/xi)*(((1-q)*1000/100)^(-xi) -1)
-                                }
+                                
+                                VAR_onestep = mu + sigma*innovations_quantile
+                                VAR_results = rbind(VAR_results, VAR_onestep)
+                                },
+                      by.column=FALSE, align="right")
 }
 ##----------------------------------------------------------------------------------------------------------##
 ##----------------------------------------------------------------------------------------------------------##
 
 
-recur_sp <-rollapply(sp1,
-                     width = 1000, 
-                     FUN= function(sp1)
-                     { 
-                       recur_garch<- ugarchfit(spec =sp_garch_spec_t ,data =as.data.frame(sp1))
-                       res_garch <-recur_garch@fit$residuals
-                       gpd_fit <-fevd(res_garch,type="GP",threshold= quantile(res_garch,0.90))
-                       coef <- gpd_fit$results$par
-                       xi <-coef[2]
-                       beta <-coef[1]
-                       q <- 0.95
-                       var <- quantile(res_garch,0.899) + (beta/xi)* (((1-q)*1000/100)^(-xi) -1)
-                       out <-union(var,coef)
-                       return (out)
-                     },
-                     by.column=FALSE, align="right")
-recur_sp 
+
+
+
+##----------------------------------------------------------------------------------------------------------##
+##Main function.
+##----------------------------------------------------------------------------------------------------------##
+
+
+##----------------------------------------------------------------------------------------------------------##
+##----------------------------------------------------------------------------------------------------------##
