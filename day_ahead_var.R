@@ -4,7 +4,7 @@
 estimate_garch <- function(specifications, data_1)
 {
   #Fit the GARCH model.
-  garch_fit <- ugarchfit(spec = specifications, data = data_1)
+  garch_fit <- ugarchfit(spec = specifications, data = data_1, solver = "hybrid")
   
   #Forecast according to the input values.
   garch_forecast <- ugarchforecast(fitORspec = garch_fit, data = data_1, n.ahead = 1)
@@ -68,7 +68,3 @@ day_ahead_VAR <- function(specifications, data_1)
 }
 ##----------------------------------------------------------------------------------------------------------##
 ##----------------------------------------------------------------------------------------------------------##
-
-
-
-
