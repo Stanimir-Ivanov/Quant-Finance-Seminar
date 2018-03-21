@@ -53,9 +53,9 @@ day_ahead_VAR <- function(specifications, data_1)
                              GPD_coef <- GPD_dist$results$par
                              
                              #Calculate quantile of the innovations
-                             q <- 0.95
-                             beta <- GPD_coef[1]
-                             xi <- GPD_coef[2]
+                             q = 0.95
+                             beta <- GPD_coef['scale1']
+                             xi <- GPD_coef['shape']
                              innovations_quantile = quantile(innovations, 0.899) + 
                                (beta/xi)*(((1-q)*1000/100)^(-xi) -1)
                              
