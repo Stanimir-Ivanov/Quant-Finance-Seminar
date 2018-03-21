@@ -64,6 +64,7 @@ day_ahead_VAR <- function(specifications, data_1)
                              return(VAR_onestep)
                            },
                            by.column=FALSE, align="right")
+  VaR_results <- lag(VAR_results)
   return(VAR_results)  
 }
 ##----------------------------------------------------------------------------------------------------------##
