@@ -3,12 +3,12 @@
 ##----------------------------------------------------------------------------------------------------------##
 source("read_and_transform.R") # read data
 source("day_ahead_var.R") # read day ahead VaR functions
-source("garch_spec.R")
+source("garch_spec.R") # read garch specs
 
 library(rugarch)
 library(extRemes)
 
-sp1 <-sp[2:length(sp)];
+sp1 <-sp[2:length(sp)]
 ing1 <- ing[2:length(ing)]
 #Define specifications of the GARCH model based on the input values.
 
