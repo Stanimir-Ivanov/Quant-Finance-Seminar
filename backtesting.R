@@ -75,14 +75,32 @@ independence <- function(T11, T10, T01, T00)
 
 
 ##----------------------------------------------------------------------------------------------------------##
-##Run Christoffersen's VaR evaluation tests.
+##Calculate conditional coverage.
+##----------------------------------------------------------------------------------------------------------##
+conditional_coverage <- function(LR_uc, LR_ind)
+{
+  LR_cc <- LR_uc + LR_ind
+  p_value <- 1 - pchisq(q = LR_cc, df = 2)
+  
+  return(list(LR = LR_cc, p = p_value))
+}
+##----------------------------------------------------------------------------------------------------------##
+##----------------------------------------------------------------------------------------------------------##
+
+
+
+
+
+##----------------------------------------------------------------------------------------------------------##
+##Run Christoffersen's VaR evaluation tests (runs the three functions above).
 ##----------------------------------------------------------------------------------------------------------##
 christoffersen <- function(VaR, data_1, q)
 {
   violations_info <- counting_violations(VaR, data_1)
   unc_cov <- unconditional_coverage(violations_info$v, length(data_1), q)
   ind <- independence(violations_info$t11, violations_info$t10, violations_info$t01, violations_info$t00)
-  return(list(unconditional_coverage = unc_cov, independence = ind))
+  cc <- conditional_coverage(unc_cov$LR, ind$LR)
+  return(list(unconditional_coverage = unc_cov, independence = ind, conditional_coverage = cc))
 }
 ##----------------------------------------------------------------------------------------------------------##
 ##----------------------------------------------------------------------------------------------------------##
