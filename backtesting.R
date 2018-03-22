@@ -63,7 +63,7 @@ independence <- function(T11, T10, T01, T00)
   H0 <- (T00+T10)*log(1-pi2) + (T11+T01)*log(pi2)
   HA <- T00*log(pi00) + T01*log(pi01) + T10*log(pi10) + T11*log(pi11)
   LR_ind <- -2*(H0-HA)
-  p_value <- 1 - pchisq(q = LR_uc, df = 1)
+  p_value <- 1 - pchisq(q = LR_ind, df = 1)
   
   return(list(pi11 = pi11, pi10 = pi10, pi01 = pi01, pi00 = pi00, LR = LR_ind, p = p_value))
 }
