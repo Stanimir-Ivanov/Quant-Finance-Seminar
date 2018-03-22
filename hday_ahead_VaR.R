@@ -1,28 +1,11 @@
 source("two_step_method.R")
 
 ##----------------------------------------------------------------------------------------------------------##
-##Function to calculate VaR.
-##----------------------------------------------------------------------------------------------------------##
-calculate_VaR <- function(z_k1, beta, xi, mu, sigma, q)
-{
-  innovations_quantile = z_k1 + 
-    (beta/xi)*(((1 - q)*1000/100)^(-xi) - 1)
-  VaR <- mu + sigma*innovations_quantile
-  names(VaR) <- q
-  return(VaR)
-}
-##----------------------------------------------------------------------------------------------------------##
-##----------------------------------------------------------------------------------------------------------## 
-
-
-
-
-##----------------------------------------------------------------------------------------------------------##
 ##Function to calculate VAR from GPD distribution and quantile of innovations z.
 ##----------------------------------------------------------------------------------------------------------##
-day_ahead_VAR <- function(specifications, data_1, q)
+hday_simulation_function <- function(specifications, data_1, q, bigassmofo)
 {
-  VaR_results <- rollapply(data_1, width = 1000,
+  hday_simulation <- rollapply(data_1, width = 1000,
                            FUN = function(data_1)
                            {
                              # Estimate GARCH model and standirdized residuals
@@ -30,6 +13,12 @@ day_ahead_VAR <- function(specifications, data_1, q)
                              mu <- results_data$forecast@forecast$seriesFor
                              sigma <- results_data$forecast@forecast$sigmaFor
                              innovations <- results_data$fit@fit$z
+                             
+                             xt1 <- mu + sigma*innovations
+                             
+                             xt2_h <- lapply()
+                             
+                             cbind(xt a)
                              
                              # Estimate GPD distribution coefficients
                              GPD_dist <- estimate_gpd(innovations)
@@ -44,7 +33,7 @@ day_ahead_VAR <- function(specifications, data_1, q)
                              
                              # Calculate VaR
                              VaR_onestep <- calculate_VaR(z_k1, beta, xi, mu, sigma, q)
-
+                             
                              return(VaR_onestep)
                            },
                            by.column=FALSE, align="right")
