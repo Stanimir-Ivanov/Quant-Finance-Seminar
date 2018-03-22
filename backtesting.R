@@ -33,7 +33,7 @@ unconditional_coverage <- function(n_violations, length_data, q)
 {
   T1 <- n_violations
   T0 <- length_data - n_violations
-  pi_hat <- T1/T0
+  pi_hat <- T1/length_data
   
   H0 <- T0*log(1-q) + T1*log(q)
   HA <- T0*log(1-pi_hat) + T1*log(pi_hat)
@@ -65,7 +65,7 @@ independence <- function(T11, T10, T01, T00)
   LR_ind <- -2*(H0-HA)
   p_value <- 1 - pchisq(q = LR_ind, df = 1)
   
-  return(list(pi11 = pi11, pi10 = pi10, pi01 = pi01, pi00 = pi00, LR = LR_ind, p = p_value))
+  return(list(pi11 = pi11, pi10 = pi10, pi01 = pi01, pi00 = pi00, pi2 = pi2, LR = LR_ind, p = p_value))
 }
 ##----------------------------------------------------------------------------------------------------------##
 ##----------------------------------------------------------------------------------------------------------##
