@@ -35,37 +35,55 @@ estimate_gpd <- function(innovations_garch)
 
 
 ##----------------------------------------------------------------------------------------------------------##
+##Function to estimate GPD distribution.
+##----------------------------------------------------------------------------------------------------------##
+calculate_VaR <- function(z_k1, beta, xi, mu, sigma, q)
+{
+  innovations_quantile = z_k1 + 
+    (beta/xi)*(((1 - q)*1000/100)^(-xi) - 1)
+  VaR <- mu + sigma*innovations_quantile
+  names(VaR) <- q
+  return(VaR)
+}
+##----------------------------------------------------------------------------------------------------------##
+##----------------------------------------------------------------------------------------------------------## 
+
+
+
+
+##----------------------------------------------------------------------------------------------------------##
 ##Function to calculate VAR from GPD distribution and quantile of innovations z.
 ##----------------------------------------------------------------------------------------------------------##
-day_ahead_VAR <- function(specifications, data_1)
+day_ahead_VAR <- function(specifications, data_1, q)
 {
-  VAR_results <- rollapply(data_1, width = 1000,
+  VaR_results <- rollapply(data_1, width = 1000,
                            FUN = function(data_1)
                            {
-                             #Estimate GARCH model and standirdized residuals
+                             # Estimate GARCH model and standirdized residuals
                              results_data <- estimate_garch(specifications, data_1)
                              mu <- results_data$forecast@forecast$seriesFor
                              sigma <- results_data$forecast@forecast$sigmaFor
                              innovations <- results_data$fit@fit$z
                              
-                             #Estimate GPD distribution coefficients
+                             # Estimate GPD distribution coefficients
                              GPD_dist <- estimate_gpd(innovations)
                              GPD_coef <- GPD_dist$results$par
                              
-                             #Calculate quantile of the innovations
-                             q = 0.95
+                             # Calculate quantile of the innovations
                              beta <- GPD_coef['scale']
                              xi <- GPD_coef['shape']
-                             innovations_quantile = quantile(innovations, 0.899) + 
-                               (beta/xi)*(((1-q)*1000/100)^(-xi) -1)
                              
-                             #Calculate the VAR
-                             VAR_onestep <- mu + sigma*innovations_quantile
-                             return(VAR_onestep)
+                             # Calculate z_k+1
+                             z_k1 <- quantile(innovations, 0.899);
+                             
+                             # Calculate VaR
+                             VaR_onestep <- calculate_VaR(z_k1, beta, xi, mu, sigma, q)
+
+                             return(VaR_onestep)
                            },
                            by.column=FALSE, align="right")
-  VaR_results <- lag(VAR_results)
-  return(VAR_results)  
+  VaR_results <- lag(VaR_results)
+  return(VaR_results)  
 }
 ##----------------------------------------------------------------------------------------------------------##
 ##----------------------------------------------------------------------------------------------------------##
