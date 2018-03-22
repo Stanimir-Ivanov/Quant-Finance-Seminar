@@ -4,7 +4,7 @@
 source("read_and_transform.R") # read data
 source("day_ahead_var.R") # read day ahead VaR functions
 source("garch_spec.R") # read garch specs
-source("counting_violations.R")
+source("backtesting.R")
 
 library(rugarch)
 library(extRemes)
