@@ -35,7 +35,7 @@ estimate_gpd <- function(innovations_garch)
 
 
 ##----------------------------------------------------------------------------------------------------------##
-##Function to estimate GPD distribution.
+##Function to calculate VaR.
 ##----------------------------------------------------------------------------------------------------------##
 calculate_VaR <- function(z_k1, beta, xi, mu, sigma, q)
 {
