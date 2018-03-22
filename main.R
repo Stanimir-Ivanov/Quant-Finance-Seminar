@@ -11,10 +11,8 @@ library(extRemes)
 
 q <- c(0.95, 0.975, .99)
 
-sp1 <-sp[2:1030]
-ing1 <- ing[2:length(ing)]
+sp1 <-sp[2:length(sp)]
 
-#Define specifications of the GARCH model based on the input values.
 VaR_results <- day_ahead_VAR(specifications = spec$garch, data_1 = sp1, q)
 
 ##----------------------------------------------------------------------------------------------------------##

@@ -17,6 +17,44 @@ calculate_VaR <- function(z_k1, beta, xi, mu, sigma, q)
 
 
 
+
+
+
+
+##----------------------------------------------------------------------------------------------------------##
+##Function to format output.
+##----------------------------------------------------------------------------------------------------------##
+format_output <- function(VaR_onestep, gpd, garch){
+  output <- cbind(t(VaR_onestep), 
+                       gpd$right_tail$results$par['scale'], 
+                       gpd$right_tail$results$par['shape'], 
+                       gpd$left_tail$results$par['scale'], 
+                       gpd$left_tail$results$par['shape'], 
+                       t(garch$fit@fit$coef),
+                       garch$forecast@forecast$seriesFor,
+                       garch$forecast@forecast$sigmaFor,
+                       t(garch$fit@fit$z))
+  names(output) <- c(q, 
+                          "right_tail_beta",
+                          "right_tail_xi",
+                          "left_tail_beta",
+                          "left_tail_xi",
+                          names(garch$fit@fit$coef),
+                          "muFor",
+                          "sigmaFor",
+                          1:1000)
+   return(output)
+}
+##----------------------------------------------------------------------------------------------------------##
+##----------------------------------------------------------------------------------------------------------## 
+
+
+
+
+
+
+
+
 ##----------------------------------------------------------------------------------------------------------##
 ##Function to calculate VAR from GPD distribution and quantile of innovations z.
 ##----------------------------------------------------------------------------------------------------------##
@@ -44,24 +82,10 @@ day_ahead_VAR <- function(specifications, data_1, q)
                              
                              # Calculate VaR
                              VaR_onestep <- calculate_VaR(z_k1, beta, xi, mu, sigma, q)
-                             VaR_onestep <- cbind(t(VaR_onestep), 
-                                              gpd$right_tail$results$par['scale'], 
-                                              gpd$right_tail$results$par['shape'], 
-                                              gpd$left_tail$results$par['scale'], 
-                                              gpd$left_tail$results$par['shape'], 
-                                              t(garch$fit@fit$coef),
-                                              garch$forecast@forecast$seriesFor,
-                                              garch$forecast@forecast$sigmaFor)
-                             names(VaR_onestep) <- c(q, 
-                                                      "right_tail_beta",
-                                                      "right_tail_xi",
-                                                      "left_tail_beta",
-                                                      "left_tail_xi",
-                                                      names(garch$fit@fit$coef),
-                                                      "muFor",
-                                                      "sigmaFor"
-                                                      )
-                             return(VaR_onestep)
+                             
+                             # format output and return
+                             output <- format_output(VaR_onestep, gpd, garch)
+                             return(output)
                            },
                            by.column=FALSE, align="right")
   VaR_results <- lag(VaR_results)
