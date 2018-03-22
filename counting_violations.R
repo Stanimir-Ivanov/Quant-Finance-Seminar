@@ -82,6 +82,7 @@ christoffersen <- function(VaR, data_1, q)
   violations_info <- counting_violations(VaR, data_1)
   unc_cov <- unconditional_coverage(violations_info$v, length(data_1), q)
   ind <- independence(violations_info$t11, violations_info$t10, violations_info$t01, violations_info$t00)
+  return(list(unconditional_coverage = unc_cov, independence = ind))
 }
 ##----------------------------------------------------------------------------------------------------------##
 ##----------------------------------------------------------------------------------------------------------##

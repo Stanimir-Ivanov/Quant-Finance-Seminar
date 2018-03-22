@@ -8,7 +8,7 @@ source("garch_spec.R") # read garch specs
 library(rugarch)
 library(extRemes)
 
-sp1 <-sp[2:length(sp)]
+sp1 <-sp[2:1030]
 ing1 <- ing[2:length(ing)]
 #Define specifications of the GARCH model based on the input values.
 
