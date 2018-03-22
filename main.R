@@ -15,7 +15,7 @@ sp1 <-sp[2:1030]
 ing1 <- ing[2:length(ing)]
 
 #Define specifications of the GARCH model based on the input values.
-VaR_results <- day_ahead_VAR(specifications = spec$tgarch, data_1 = sp1, q)
+VaR_results <- day_ahead_VAR(specifications = spec$garch, data_1 = sp1, q)
 
 ##----------------------------------------------------------------------------------------------------------##
 ##----------------------------------------------------------------------------------------------------------##

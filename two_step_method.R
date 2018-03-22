@@ -24,8 +24,9 @@ estimate_garch <- function(specifications, data_1)
 ##----------------------------------------------------------------------------------------------------------##
 estimate_gpd <- function(innovations_garch)
 {
-  GPD_fit <- fevd(innovations_garch, type = "GP", threshold = quantile(innovations_garch, 0.90))
-  return(GPD_fit)
+  right_tail <- fevd(innovations_garch, type = "GP", threshold = quantile(innovations_garch, 0.90))
+  left_tail <- fevd(-innovations_garch, type = "GP", threshold = quantile(-innovations_garch, 0.90))
+  return(list(left_tail = left_tail, right_tail = right_tail))
 }
 ##----------------------------------------------------------------------------------------------------------##
 ##----------------------------------------------------------------------------------------------------------## 
