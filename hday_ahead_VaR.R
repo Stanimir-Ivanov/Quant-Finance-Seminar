@@ -5,21 +5,23 @@ library(SpatialExtremes)
 ##----------------------------------------------------------------------------------------------------------##
 ##Random innovation sumulation function.
 ##----------------------------------------------------------------------------------------------------------##
-rand_innovation <- function(z_vec, gpd)
+rand_innovation <- function(z_vec, gpd,n)
 {
-  n_rand <- as.numeric(sample.int(1:1000, 1, replace = TRUE))
-  z_rand <- z_vec[n]
-  
-  if (z_rand > gpd$right_thresh)
+  random <- sample.int(1000,n,replace=TRUE) 
+  for (i in 1:n) 
   {
-    z_rand <- gpd$right_thresh + rgpd(1, loc = 0, gpd$right_beta, gpd$right_xi)
+    m <- random[i]
+    if (z_vec[m] > gpd$right_thresh)
+    {
+      z_vec[m] <- gpd$right_thresh + rgpd(1, loc = 0, gpd$right_beta, gpd$right_xi)
+    }
+    if (z_vec[m] < gpd$left_thresh)
+    {
+      z_vec[m] <- left_thresh - rgpd(1, loc = 0, gpd$left_beta, gpd$left_xi)
+    }
+    
+    return(z_vec)
   }
-  if (z_rand < gpd$left_thresh)
-  {
-    z_rand <- left_thresh - rgpd(1, loc = 0, gpd$left_beta, gpd$left_xi)
-  }
-  z_vec[n] <- z_rand
-  return(list(z = z_rand, innovations = z_vec))
 }
 ##----------------------------------------------------------------------------------------------------------##
 ##----------------------------------------------------------------------------------------------------------##
