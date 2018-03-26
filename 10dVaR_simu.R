@@ -34,48 +34,32 @@ left_excess <-function(left_tail)
   return(left_y1)
 }
 
+
+
+inno_z <-simu_sp_garch_n@fit$z 
 right_thres <- as.numeric(quantile(inno_z,0.9))
 left_thres <- as.numeric(quantile(inno_z,0.1))
 
+# function models the simulation of innovation for h-days VaR
+# input 1. n:  #  simulation picks 
+# input 2. n:  #  innovation
 
-#simulation step 234, needs to be combined with apply or for-loop
-
-inno_z <-inno_z[1:10]
-step234 <- function(n,inno_z)
-{ 
-  if (inno_z[n] > right_thres)
-  { 
-    #replace(inno_z, n, right_thres + right_excess(right_tail) ) }
-    inno_z[n] <- right_thres + right_excess(right_tail)}
-  
-  else if (inno_z[n] < left_thres)
-  { inno_z[n] <- left_thres + left_excess(left_tail)}
-  
-  else
-  { inno_z[n] <-inno_z[n] }
-  inno_z <- inno_z
-   return(inno_z)
-  }
-
-
-inno_z <-simu_sp_garch_n@fit$z
-
-simu_inno <- sapply(random, function(random)
+hdays_VaR_simulation <-function (n,inno_z)
 {
-  if (inno_z[n] > right_thres)
+  random <- sample.int(1000,n,replace=TRUE) 
+
+  for (i in 1:n) 
   {
-    #replace(inno_z, n, right_thres + right_excess(right_tail) ) }
-    inno_z[n] <- right_thres + right_excess(right_tail)}
-
-  else if (inno_z[n] < left_thres)
-  { inno_z[n] <- left_thres + left_excess(left_tail)}
-
-  else
-  { inno_z[n] <-inno_z[n] }
-
-  return(inno_z)
-})
-simu_inno
-
+    m <- random[i]
+    if (inno_z[m] > right_thres)
+    {
+      #replace(inno_z, n, right_thres + right_excess(right_tail) ) }
+      inno_z[m] <- right_thres + right_excess(right_tail)}
+    
+    if (inno_z[m] < left_thres)
+    { inno_z[m] <- left_thres + left_excess(left_tail)}
   
+  }
+    return(inno_z)
+}
 
