@@ -43,7 +43,7 @@ left_thres <- as.numeric(quantile(inno_z,0.1))
 # function models the simulation of innovation for h-days VaR
 # input 1. n:  #  simulation picks 
 # input 2. n:  #  innovation
-
+test11 <- inno_z
 hdays_VaR_simulation <-function (n,inno_z)
 {
   random <- sample.int(1000,n,replace=TRUE) 
@@ -62,4 +62,4 @@ hdays_VaR_simulation <-function (n,inno_z)
   }
     return(inno_z)
 }
-
+inno_z <- hdays_VaR_simulation(1000,inno_z) 

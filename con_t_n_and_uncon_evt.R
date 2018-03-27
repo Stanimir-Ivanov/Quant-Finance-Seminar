@@ -1,5 +1,6 @@
 # Import data by read.zoo and pass it into function "data_read"
-# Function "data_read" convert data into suitable format 
+# Function "data_read" convert data into suitable format (positive log returns, 
+# which are needed for garch_normal and garch_t)
 # then run garch_normal and garch_t
 
 # an example of importing data is the following: 
@@ -8,6 +9,9 @@ sp <- read.zoo("SP-500.csv", header = TRUE, sep = ",",format="%m/%d/%Y",index.co
 # step1. convert data 
 # step2. run data in garch_normal and garch_t 
 # reprot the relevant var value
+
+# Important !! Function garch_normal and garch_t !!  requries POSTITIVE log return as data input
+# Function uncondiEvT requries negative log returns as we always did
 
 data_read <- function(data1)
 {
