@@ -3,8 +3,11 @@
 # which are needed for garch_normal and garch_t)
 # then run garch_normal and garch_t
 
-# an example of importing data is the following: 
+# examples of importing data is the following: 
 sp <- read.zoo("SP-500.csv", header = TRUE, sep = ",",format="%m/%d/%Y",index.column = 1)
+ing <- read.zoo("ING.csv", header = TRUE, sep = ",",format="%Y/%m/%d",index.column = 1)
+rds <- read.zoo("RDS-B.csv", header = TRUE, sep = ",",format="%Y/%m/%d",index.column = 1)
+aex <- read.zoo("AEX.csv", header = TRUE, sep = ",",format="%Y/%m/%d",index.column = 1)
 
 # step1. convert data 
 # step2. run data in garch_normal and garch_t 
@@ -18,7 +21,7 @@ data_read <- function(data1)
 # data1 <- read.zoo("SP-500.csv", header = TRUE, sep = ",",format="%m/%d/%Y",index.column = 1)
 data1 <- xts(data1)
 data1 <- 100*diff(log(data1))
-data1 <-data1[2: length(data1)]
+data1 <- data1[2: length(data1)]
 return (data1)
 }
 
@@ -52,13 +55,14 @@ report(sp_garch_t, type="VaR", VaR.alpha = 0.05, conf.level = 0.95)
 report(sp_garch_t, type="fpm")
 
 # function uncondiEvT calculate the VaR based on unciondtional EVT, i.e. apply GPD on raw data 
+# input data should contain negative log return
 # return 3 levels VaR 0.95, 0.99 and 0.995
 # VaR needs to be passed into backtesting function
 uncondiEvT <-function (data1)
 {
   rollapply(data1,
             width = 1000, 
-            FUN= function(sp1)
+            FUN= function(data1)
             { 
               k <- 0.90  #  threshold quantile choice
               gpd_fit <-fevd(data1,type="GP",threshold= quantile(data1,k))
@@ -76,10 +80,33 @@ uncondiEvT <-function (data1)
               var95 <-mu + sigma *zq95
               var99 <-mu + sigma *zq99
               var995 <-mu + sigma *zq995
-              return (list(var95,var99,var995))
+              var <- cbind(var95,var99,var995)
+              colnames(var) <- c("VaR95%","VaR99%","VaR99.5%")
+              return (var)
             },
             by.column=FALSE, align="right",na.pad=FALSE)
 }
 
+sp <- data_read(sp)
+ing <- data_read(ing)
+# aex <- data_read(aex)
+rds <- data_read(rds)
 
+# debuggingState(on=FALSE) , quite global debugging mode
+# compute the running time of the program
+start.time <- Sys.time()
+ing_con_n <- garch_normal(ing)
+ing_con_t <- garch_t(ing)
+rds_con_n <- garch_normal(rds)
+rds_con_t <- garch_t(rds)
+end.time <- Sys.time()
+time.taken <- end.time - start.time
+time.taken
+
+ing <- -ing
+sp <- -sp
+rds <- -rds
+rds_uncon_evt <-uncondiEvT(rds[2:length(rds)])
+sp_uncon_evt <-uncondiEvT(sp[2:length(sp)])
+ing_uncon_evt <-uncondiEvT(ing[2:length(ing)])
 
