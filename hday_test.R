@@ -87,6 +87,24 @@ hday_loop <- function(data_1, results, h)
                                                 
                                                 return(xt)
                                               })
+                              
+                              mu_t <- muFor
+                              sigma_t <- sigmaFor
+                              
+                              hdays <- 1:h
+                              xt_h <- lapply(hdays,
+                                             HDAYS <- function(j) 
+                                             {
+                                               d <- j
+                                               z <- rand_innovation(innovations, gpd)
+                                               innovations <- z$innovations
+                                               xt <- mu_t + sigma_t * as.numeric(z$z)
+                                               
+                                               eps <- xt - mu_t
+                                               mu_t <- garch$ar1_phi*xt
+                                               sigma_t <- garch$garch_mu + garch$garch_a*eps + garch$garch_a*sigma_t
+                                               return(xt)
+                                             })
                               return(c(xt1, as.vector(xt2_h)))
                             })
   return(hday_simulation)
