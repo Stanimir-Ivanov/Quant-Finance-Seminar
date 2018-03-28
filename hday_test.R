@@ -34,23 +34,24 @@ hday_loop <- function(data_1, results, h)
   hday_simulation <- lapply(counter, SIM <- function(i)
                             {
                               # Define parameters
-                              muFor <- results$muFor[i]
-                              sigmaFor <- results$sigmaFor[i]
-                              innovations <- as.data.frame(results[i, (length(results[1,]) - 999)
-                                                                   :length(results[1,])])
+                              row_row_results = results[i,]
+                              muFor <- row_results$muFor 
+                              sigmaFor <- row_results$sigmaFor 
+                              innovations <- as.data.frame(row_results[i, (length(row_results) - 999)
+                                                                   :length(row_results)])
                               
                               gpd <- list(right_thresh = as.numeric(quantile(innovations,0.9)),
                                           left_thresh = as.numeric(quantile(innovations,0.1)),
-                                          right_beta = results$right_tail_beta[i],
-                                          right_xi = results$right_tail_xi[i],
-                                          left_beta = results$left_tail_beta[i],
-                                          left_xi = results$left_tail_xi[i])
+                                          right_beta = row_results$right_tail_beta ,
+                                          right_xi = row_results$right_tail_xi ,
+                                          left_beta = row_results$left_tail_beta ,
+                                          left_xi = row_results$left_tail_xi )
                               
-                              garch <- list(ar1_mu = results$mu[i],
-                                            ar1_phi = results$ar1[i],
-                                            garch_mu = results$omega[i],
-                                            garch_a = results$alpha1[i],
-                                            garch_b = results$beta1[i])
+                              garch <- list(ar1_mu = row_results$mu ,
+                                            ar1_phi = row_results$ar1 ,
+                                            garch_mu = row_results$omega ,
+                                            garch_a = row_results$alpha1 ,
+                                            garch_b = row_results$beta1 )
                               # 
                               # # Simulate random innovation
                               # z <- rand_innovation(innovations, gpd)
@@ -102,7 +103,7 @@ hday_loop <- function(data_1, results, h)
                                                
                                                eps <- xt - mu_t
                                                mu_t <- garch$ar1_phi*xt
-                                               sigma_t <- garch$garch_mu + garch$garch_a*eps + garch$garch_a*sigma_t
+                                               sigma_t <- (garch$garch_mu + garch$garch_a*eps^2 + garch$garch_b*sigma_t^2)^(1/2)
                                                return(xt)
                                              })
                               return(xt_h)
