@@ -17,5 +17,11 @@ sp <- - 100*diff(log(sp))
 ing <- - 100*diff(log(ing))
 rds<- - 100*diff(log(rds))
 aex<- - 100*diff(log(aex))
+# Data for use
+sp_data <- sp[2:length(sp)]
+ing_data <- ing[2:length(ing)]
+rds_data <- rds[2:length(rds)]
+aex_data <- aex[2:length(aex)]
+aex_data <- aex1[!is.na(aex_data)]
 ##----------------------------------------------------------------------------------------------------------##
 ##----------------------------------------------------------------------------------------------------------##

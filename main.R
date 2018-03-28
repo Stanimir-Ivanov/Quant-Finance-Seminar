@@ -14,7 +14,7 @@ source("garch_spec.R") # read garch specs
 source("backtesting.R")
 source("VaR.R")
 
-q <- c(0.95, 0.975, .99)
+q <- c(.95, .99, .995)
 
 sp1 <-sp[2:length(sp)]
 sp_test <- sp[2:1005]
