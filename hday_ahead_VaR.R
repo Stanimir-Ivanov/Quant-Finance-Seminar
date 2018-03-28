@@ -27,9 +27,9 @@ rand_innovation <- function(z_vec, gpd)
 
 ##----------------------------------------------------------------------------------------------------------##
 ##----------------------------------------------------------------------------------------------------------##
-hday_loop <- function(data_1, results, h)
+hday_loop <- function(data_length, results, h)
 {
-  counter <- 1:length(data_1)
+  counter <- 1:data_length
   hday_simulation <- lapply(counter, SIM <- function(i)
   {
     # Define parameters
