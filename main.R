@@ -13,12 +13,27 @@ source("backtesting.R")
 source("VaR.R")
 
 q <- c(.95, .99, .995)
+h <- 10
+n <- 1000
 
-sp1 <-sp[2:length(sp)]
-sp_test <- sp[2:1005]
+# sp
+res_sp_garch <- VaR_estimation(specifications = spec$garch, data_1 = sp_data, q, h, n)
+res_sp_tgarch <- VaR_estimation(specifications = spec$tgarch, data_1 = sp_data, q, h, n)
+res_sp_egarch <- VaR_estimation(specifications = spec$egarch, data_1 = sp_data, q, h, n)
 
-# VaR_results <- day_ahead_VAR(specifications = spec$garch, data_1 = sp1, q)
-VaR_results <- VaR_estimation(specifications = spec$garch, data_1 = sp_test, q, 10, 1000)
+# ing
+res_ing_garch <- VaR_estimation(specifications = spec$garch, data_1 = ing_data, q, h, n)
+res_ing_tgarch <- VaR_estimation(specifications = spec$tgarch, data_1 = ing_data, q, h, n)
+res_ing_egarch <- VaR_estimation(specifications = spec$egarch, data_1 = ing_data, q, h, n)
 
+# rds
+res_rds_garch <- VaR_estimation(specifications = spec$garch, data_1 = rds_data, q, h, n)
+res_rds_tgarch <- VaR_estimation(specifications = spec$tgarch, data_1 = rds_data, q, h, n)
+res_rds_egarch <- VaR_estimation(specifications = spec$egarch, data_1 = rds_data, q, h, n)
+
+# aex
+res_aex_garch <- VaR_estimation(specifications = spec$garch, data_1 = aex_data, q, h, n)
+res_aex_tgarch <- VaR_estimation(specifications = spec$tgarch, data_1 = aex_data, q, h, n)
+res_aex_egarch <- VaR_estimation(specifications = spec$egarch, data_1 = aex_data, q, h, n)
 ##----------------------------------------------------------------------------------------------------------##
 ##----------------------------------------------------------------------------------------------------------##
