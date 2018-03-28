@@ -7,7 +7,6 @@ library(SpatialExtremes)
 ##----------------------------------------------------------------------------------------------------------##
 rand_innovation <- function(z_vec, gpd)
 {
-  print(length(z_vec))
   r <- sample(1:1000, 1)
   if (z_vec[r] > gpd$right_thresh)
   {
