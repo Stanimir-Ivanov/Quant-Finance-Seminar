@@ -23,14 +23,19 @@ calculate_VaR <- function(z_k1, beta, xi, mu, sigma, q)
 ##----------------------------------------------------------------------------------------------------------##
 rand_innovation <- function(z_vec, gpd)
 {
+  r_threshold <- as.numeric(quantile(z_vec,0.9))
+  l_threshold <- as.numeric(quantile(z_vec,0.1))
+  
   r <- sample(1:1000, 1)
-  if (z_vec[r] > gpd$right_thresh)
+  if (z_vec[r] > r_threshold)
   {
-    z_vec[r] <- gpd$right_thresh + rgpd(1, loc = 0, scale = gpd$right_beta, shape = gpd$right_xi)
+    z_vec[r] <- r_threshold + rgpd(1, loc = 0, scale = gpd$right_tail$results$par['scale'],
+                                   shape = gpd$right_tail$results$par['shape'])
   }
-  if (z_vec[r] < gpd$left_thresh)
+  if (z_vec[r] < l_threshold)
   {
-    z_vec[r] <- gpd$left_thresh - rgpd(1, loc = 0, scale = gpd$left_beta, shape = gpd$left_xi)
+    z_vec[r] <- l_threshold - rgpd(1, loc = 0, scale = gpd$left_tail$results$par['scale'],
+                                   shape = gpd$left_tail$results$par['shape'])
   }
   return(list(innovations = z_vec, z = z_vec[r]))
 }
