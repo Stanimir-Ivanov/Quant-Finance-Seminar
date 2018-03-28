@@ -1,7 +1,3 @@
-source("two_step_method.R")
-library(SpatialExtremes)
-
-
 ##----------------------------------------------------------------------------------------------------------##
 ##Random innovation sumulation function.
 ##----------------------------------------------------------------------------------------------------------##
@@ -10,11 +6,11 @@ rand_innovation <- function(z_vec, gpd)
   r <- sample(1:1000, 1)
   if (z_vec[r] > gpd$right_thresh)
   {
-    z_vec[r] <- gpd$right_thresh + rgpd(1, loc = 0, gpd$right_beta, gpd$right_xi)
+    z_vec[r] <- gpd$right_thresh + rgpd(1, loc = 0, scale = gpd$right_beta, shape = gpd$right_xi)
   }
   if (z_vec[r] < gpd$left_thresh)
   {
-    z_vec[r] <- gpd$left_thresh - rgpd(1, loc = 0, gpd$left_beta, gpd$left_xi)
+    z_vec[r] <- gpd$left_thresh - rgpd(1, loc = 0, scale = gpd$left_beta, shape = gpd$left_xi)
   }
   return(list(innovations = z_vec, z = z_vec[r]))
 }
@@ -27,10 +23,10 @@ rand_innovation <- function(z_vec, gpd)
 
 ##----------------------------------------------------------------------------------------------------------##
 ##----------------------------------------------------------------------------------------------------------##
-hday_loop <- function(data_length, results, h)
+hday_VaR <- function(data_length, results, h, q, n)
 {
-  counter <- 1:data_length
-  hday_simulation <- lapply(counter, SIM <- function(i)
+  counter <- as.matrix(1:data_length)
+  hday_simulation <- apply(counter, MARGIN = 1, SIM <- function(i)
   {
     # Define parameters
     row_results = results[i,]                              
@@ -53,22 +49,28 @@ hday_loop <- function(data_length, results, h)
     mu_t <- row_results$muFor 
     sigma_t <- row_results$sigmaFor 
     
-    hdays <- 1:h
-    xt_h <- lapply(hdays,
-                   HDAYS <- function(j) 
-                   {
-                     d <- j
-                     z <- rand_innovation(innovations, gpd)
-                     innovations <- z$innovations
-                     xt <- mu_t + sigma_t * as.numeric(z$z)
-                     eps <- xt - mu_t
-                     mu_t <- garch$ar1_phi*xt
-                     sigma_t <- (garch$garch_mu + garch$garch_a*eps^2 + garch$garch_b*sigma_t^2)^(1/2)
-                     return(xt)
-                   })
-    return(xt_h)
+    simulations <- as.matrix(1:n)
+    paths <- apply(simulations, MARGIN = 1, PATHS <- function(k)
+    {
+      hdays <- as.matrix(1:h)
+      return (sum(apply(hdays, MARGIN = 1,
+                        HDAYS <- function(j) 
+                        {
+                          z <- rand_innovation(innovations, gpd)
+                          innovations <- z$innovations
+                          xt <- mu_t + sigma_t * as.numeric(z$z)
+                          eps <- xt - mu_t
+                          mu_t <- garch$ar1_phi*xt
+                          sigma_t <- (garch$garch_mu + garch$garch_a*eps^2 + garch$garch_b*sigma_t^2)^(1/2)
+                          return(xt)
+                        })))
+    })
+    return(quantile(paths, q))
   })
-  return(hday_simulation)
+  dates <- as.Date(time(results))
+  dates <- dates[1:data_length]
+  hday_VaR <- xts(t(hday_simulation), dates)
+  return(hday_VaR)
 }
 ##----------------------------------------------------------------------------------------------------------##
 ##----------------------------------------------------------------------------------------------------------##

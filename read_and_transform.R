@@ -1,8 +1,6 @@
 ##----------------------------------------------------------------------------------------------------------##
 ##Reads and transforms the data.
 ##----------------------------------------------------------------------------------------------------------##
-library(xts)
-library(zoo)
 
 # Import data and convert into time series format
 sp <- read.zoo("./Data/SP-500.csv", header = TRUE, sep = ",",format="%m/%d/%Y",index.column = 1)
