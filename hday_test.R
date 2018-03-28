@@ -51,43 +51,43 @@ hday_loop <- function(data_1, results, h)
                                             garch_mu = results$omega[i],
                                             garch_a = results$alpha1[i],
                                             garch_b = results$beta1[i])
-                              
-                              # Simulate random innovation
-                              z <- rand_innovation(innovations, gpd)
-                              innovations <- z$innovations
-                              print(sigmaFor)
-                              print(z$z)
-                              print(muFor)
-                              xt1 <- muFor + sigmaFor*as.numeric(z$z)
-                              print(xt1)
-                              
-                              # Define variables for hday-loop
-                              x <- xt1
-                              mu_old <- muFor
-                              sigma_old <- sigmaFor
-                              
-                              days <- 1:(h-1)
-                              xt2_h <- lapply(days,
-                                              HDAYS <- function(j) 
-                                              {
-                                                # Calculate next day variables
-                                                h <- j
-                                                mu_new <- garch$ar1_phi*x
-                                                eps <- x - mu_old
-                                                sigma_new <- as.numeric(garch$garch_mu + garch$garch_a*eps)
-                                                + garch$garch_a*sigma_old
-                                                z <- rand_innovation(innovations, gpd)
-                                                innovations <- z$innovations
-                                                xt <- mu_new + sigma_new*as.numeric(z$z)
-                                                
-                                                # Define variables for next loop
-                                                x <- xt
-                                                mu_old <- mu_new
-                                                sigma_old <- sigma_new
-                                                
-                                                return(xt)
-                                              })
-                              
+                              # 
+                              # # Simulate random innovation
+                              # z <- rand_innovation(innovations, gpd)
+                              # innovations <- z$innovations
+                              # print(sigmaFor)
+                              # print(z$z)
+                              # print(muFor)
+                              # xt1 <- muFor + sigmaFor*as.numeric(z$z)
+                              # print(xt1)
+                              # 
+                              # # Define variables for hday-loop
+                              # x <- xt1
+                              # mu_old <- muFor
+                              # sigma_old <- sigmaFor
+                              # 
+                              # days <- 1:(h-1)
+                              # xt2_h <- lapply(days,
+                              #                 HDAYS <- function(j) 
+                              #                 {
+                              #                   # Calculate next day variables
+                              #                   h <- j
+                              #                   mu_new <- garch$ar1_phi*x
+                              #                   eps <- x - mu_old
+                              #                   sigma_new <- as.numeric(garch$garch_mu + garch$garch_a*eps)
+                              #                   + garch$garch_a*sigma_old
+                              #                   z <- rand_innovation(innovations, gpd)
+                              #                   innovations <- z$innovations
+                              #                   xt <- mu_new + sigma_new*as.numeric(z$z)
+                              #                   
+                              #                   # Define variables for next loop
+                              #                   x <- xt
+                              #                   mu_old <- mu_new
+                              #                   sigma_old <- sigma_new
+                              #                   
+                              #                   return(xt)
+                              #                 })
+                               
                               mu_t <- muFor
                               sigma_t <- sigmaFor
                               
@@ -105,7 +105,7 @@ hday_loop <- function(data_1, results, h)
                                                sigma_t <- garch$garch_mu + garch$garch_a*eps + garch$garch_a*sigma_t
                                                return(xt)
                                              })
-                              return(c(xt1, as.vector(xt2_h)))
+                              return(xt_h)
                             })
   return(hday_simulation)
 }
