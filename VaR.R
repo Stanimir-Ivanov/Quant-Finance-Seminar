@@ -8,7 +8,6 @@ calculate_VaR <- function(z_k1, beta, xi, mu, sigma, q)
   innovations_quantile = z_k1 + 
     (beta/xi)*(((1 - q)*1000/100)^(-xi) - 1)
   VaR <- mu + sigma*innovations_quantile
-  names(VaR) <- q
   return(VaR)
 }
 ##----------------------------------------------------------------------------------------------------------##
@@ -108,7 +107,9 @@ VaR_estimation <- function(specifications, data_1, q, h, n)
                              return(c(VaR_1day, t(VaR_hday)))
                            },
                            by.column=FALSE, align="right")
-  #VaR_results <- lag(VaR_results)
+  VaR_results <- lag(VaR_results)
+  names <- c(paste("1 Day", q), paste(h, "Day", q))
+  colnames(VaR_results) <- names
   VaR_results <- VaR_results[!is.na(VaR_results[,1])]
   return(VaR_results)  
 }
