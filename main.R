@@ -17,6 +17,7 @@ h <- 10
 n <- 1000
 
 # after you are done
+# setwd() to repo beforehand
 # save(res_dataName_specName, '.\Data\condi_evt\res_dataName_specName.RData')
 
 # sp
