@@ -17,7 +17,7 @@ h <- 10
 n <- 1000
 
 # after you are done
-# save(res_dataName_specName, '.\Data\res_dataName_specName.RData')
+# save(res_dataName_specName, '.\Data\condi_evt\res_dataName_specName.RData')
 
 # sp
 res_sp_garch <- VaR_estimation(specifications = spec$garch, data_1 = sp_data, q, h, n) # done
