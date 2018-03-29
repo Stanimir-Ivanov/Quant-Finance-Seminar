@@ -46,7 +46,7 @@ rand_innovation <- function(z_vec, gpd)
 
 
 ##----------------------------------------------------------------------------------------------------------##
-##Function to calculate VAR from GPD distribution and quantile of innovations z.
+##Function to calculate 1-day and h-day ahead VAR from GPD distribution and quantile of innovations z.
 ##----------------------------------------------------------------------------------------------------------##
 VaR_estimation <- function(specifications, data_1, q, h, n)
 {
