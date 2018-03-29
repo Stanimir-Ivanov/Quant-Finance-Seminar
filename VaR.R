@@ -3,18 +3,24 @@ source("two_step_method.R")
 ##----------------------------------------------------------------------------------------------------------##
 ##Function to calculate VaR.
 ##----------------------------------------------------------------------------------------------------------##
-calculate_VaR <- function(z_k1, beta, xi, mu, sigma, q)
+calculate_VaR <- function(threshold, beta, xi, mu, sigma, q)
 {
-  innovations_quantile = z_k1 + 
-    (beta/xi)*(((1 - q)*1000/100)^(-xi) - 1)
-  VaR <- mu + sigma*innovations_quantile
-  return(VaR)
+  innovation_quantile = innovation_quantile(threshold, beta, xi, q)
+  return(mu + sigma * innovation_quantile)
 }
 ##----------------------------------------------------------------------------------------------------------##
 ##----------------------------------------------------------------------------------------------------------## 
 
-
-
+##----------------------------------------------------------------------------------------------------------##
+##Function to calculate innovations quantile
+##----------------------------------------------------------------------------------------------------------##
+innovation_quantile <- function(threshold, beta, xi, q)
+{
+  return(threshold + 
+           (beta/xi)*(((1 - q)*1000/100)^(-xi) - 1));  
+}
+##----------------------------------------------------------------------------------------------------------##
+##----------------------------------------------------------------------------------------------------------## 
 
 
 ##----------------------------------------------------------------------------------------------------------##
@@ -45,6 +51,36 @@ rand_innovation <- function(z_vec, gpd)
 
 
 
+
+
+
+
+##----------------------------------------------------------------------------------------------------------##
+##Expected shortfall multiplier
+##----------------------------------------------------------------------------------------------------------##
+expected_shortfall_multiplier <- function(beta, xi, innovation_quantile, threshold)
+{
+  return(1/(1 - xi) + (beta - xi * threshold)/((1 - xi)*innovation_quantile))  
+}
+##----------------------------------------------------------------------------------------------------------##
+##----------------------------------------------------------------------------------------------------------##
+
+
+
+
+##----------------------------------------------------------------------------------------------------------##
+##Expected shortfall 
+##----------------------------------------------------------------------------------------------------------##
+calculate_ES <- function(threshold, beta, xi, mu, sigma, q)
+{
+  innovation_quantile <- innovation_quantile(threshold, beta, xi, q)
+  ES_multiplier <- expected_shortfall_multiplier(beta, xi, innovation_quantile, threshold)
+  return(mu + sigma*innovation_quantile*ES_multiplier)
+}
+##----------------------------------------------------------------------------------------------------------##
+##----------------------------------------------------------------------------------------------------------##
+
+
 ##----------------------------------------------------------------------------------------------------------##
 ##Function to calculate 1-day and h-day ahead VAR from GPD distribution and quantile of innovations z.
 ##----------------------------------------------------------------------------------------------------------##
@@ -67,12 +103,12 @@ VaR_estimation <- function(specifications, data_1, q, h, n)
                              # Calculate quantile of the innovations
                              beta <- gpd_coef['scale']
                              xi <- gpd_coef['shape']
-                             z_k1 <- quantile(innovations, 0.899);
+                             threshold <- quantile(innovations, 0.899);
                              
                              # Calculate day-ahead VaR
-                             VaR_1day <- calculate_VaR(z_k1, beta, xi, mu, sigma, q)
-                             ## ---
-                             
+                             VaR_1day <- calculate_VaR(threshold, beta, xi, mu, sigma, q)
+                             ## Calculate day-ahead Expected shortfall
+                             ES_1day <- calculate_ES(threshold, beta, xi, mu, sigma, q)
                              
                              
                              ## H-DAY AHEAD VAR ---
@@ -103,11 +139,11 @@ VaR_estimation <- function(specifications, data_1, q, h, n)
                                                  })))
                              })
                              VaR_hday <- quantile(paths, q)
-                             return(c(VaR_1day, t(VaR_hday)))
+                             return(c(VaR_1day, ES_1day, t(VaR_hday)))
                            },
                            by.column=FALSE, align="right")
   VaR_results <- lag(VaR_results)
-  names <- c(paste("1 Day", q), paste(h, "Day", q))
+  names <- c(paste("1 Day VaR", q), paste("1 Day ES ", q), paste(h, "Day VaR", q))
   colnames(VaR_results) <- names
   VaR_results <- VaR_results[!is.na(VaR_results[,1])]
   return(VaR_results)  
