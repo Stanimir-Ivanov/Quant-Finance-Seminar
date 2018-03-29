@@ -103,7 +103,7 @@ VaR_estimation <- function(specifications, data_1, q, h, n)
                                                  })))
                              })
                              VaR_hday <- quantile(paths, q)
-                             
+                             print(c(VaR_1day, t(VaR_hday)))
                              return(c(VaR_1day, t(VaR_hday)))
                            },
                            by.column=FALSE, align="right")
