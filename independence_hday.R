@@ -19,8 +19,8 @@ violations_hday <- function(data_1, VaR)
 ##----------------------------------------------------------------------------------------------------------##
 ind_hday <- function(violations, h)
 {
-  v1 <- coredata(as.array(violations[1:n-h]))
-  v2 <- coredata(as.array(violations[1+h:n]))
+  v1 <- coredata(as.array(violations[1:(n-h)]))
+  v2 <- coredata(as.array(violations[(1+h):n]))
   
   T11 <- sum(v1 & v2)
   T00 <- sum(!v1 & !v2)
