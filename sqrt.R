@@ -21,7 +21,7 @@ hday_uncond <- function(h, var_data, data)  #var_data consists of the 10day ahea
   violations = 0
   for (    i in 1:(length(data)-h)    ) {
     hdayreturn = sum(data[(i):(i+h-1)])
-    if (hdayreturn > var_data[i]) {violations = violations +1}
+    if (hdayreturn > var_data[i+h]) {violations = violations +1}
   }
   return(violations)
 }
