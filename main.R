@@ -18,7 +18,11 @@ n <- 1000
 
 # after you are done
 # setwd() to repo beforehand
-# save(res_dataName_specName, '.\Data\condi_evt\res_dataName_specName.RData')
+save(res_sp_garch, file = "./Data/condi_evt/res_sp_garch.RData")
+save(res_sp_tgarch, file = "./Data/condi_evt/res_sp_tgarch.RData")
+save(res_sp_egarch, file = "./Data/condi_evt/res_sp_egarch.RData")
+save(res_ing_garch, file = "./Data/condi_evt/res_ing_garch.RData")
+
 
 # sp
 res_sp_garch <- VaR_estimation(specifications = spec$garch, data_1 = sp_data, q, h, n) # Stan
