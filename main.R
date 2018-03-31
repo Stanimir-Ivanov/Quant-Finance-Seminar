@@ -22,8 +22,13 @@ save(res_sp_garch, file = "./Data/condi_evt/res_sp_garch.RData")
 save(res_sp_tgarch, file = "./Data/condi_evt/res_sp_tgarch.RData")
 save(res_sp_egarch, file = "./Data/condi_evt/res_sp_egarch.RData")
 save(res_ing_garch, file = "./Data/condi_evt/res_ing_garch.RData")
-
-
+save(res_ing_tgarch, file = './Data/condi_evt/res_ing_tgarch.RData')
+save(res_rds_garch, file = './Data/condi_evt/res_rds_garch.RData')
+save(res_rds_tgarch, file = './Data/condi_evt/res_rds_tgarch.RData')
+save(res_aex_egarch, file = './Data/condi_evt/res_aex_egarch.RData')
+save(res_aex_garch, file = './Data/condi_evt/res_aex_garch.RData')
+save(res_aex_tgarch, file = './Data/condi_evt/res_aex_tgarch.RData')
+save(res_rds_egarch, file = './Data/condi_evt/res_rds_egarch.RData')
 # sp
 res_sp_garch <- VaR_estimation(specifications = spec$garch, data_1 = sp_data, q, h, n) # Stan
 res_sp_tgarch <- VaR_estimation(specifications = spec$tgarch, data_1 = sp_data, q, h, n) # Stan
