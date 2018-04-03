@@ -31,5 +31,5 @@ backtesting <- function(data_1, results)
 
 
 
-##--- Write a certain file in excel
-##--- WriteXLS(x = as.data.frame(name_of_file), ExcelFileName = "backtesting.xls", row.names = FALSE ) 
+##--- Write a certain file in excel --> install.packages("WriteXLS")
+##--- WriteXLS(x = as.data.frame(name_of_file), ExcelFileName = "backtesting.xls", SheetNames = "sheet_name", row.names = FALSE) 
