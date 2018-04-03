@@ -105,15 +105,11 @@ conditional_coverage <- function(LR_uc, LR_ind)
 backtesting_function <- function(VaR, data_1, h, q)
 {
   violations_info <- counting_violations(VaR, data_1, h)
-  unc_cov <- 0
-  cc <- 0
 
   ind <- ind_hday(violations_info$vec, h)
-  if (h == 1)
-  {
-    unc_cov <- unconditional_coverage(violations_info$v, length(data_1), q)
-    cc <- conditional_coverage(unc_cov$LR, ind$LR)
-  }
+  unc_cov <- unconditional_coverage(violations_info$v, length(data_1), q)
+  cc <- conditional_coverage(unc_cov$LR, ind$LR)
+
   
   return(list(v = violations_info$v, uc = unc_cov$p, ind = ind$p, cc = cc$p))
 }

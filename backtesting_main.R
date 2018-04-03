@@ -16,9 +16,9 @@ backtesting <- function(data_1, results)
   counter <- c(1, 2, 3)
   backtesting_results <- lapply(counter, fun <- function(i)
                                {
-                                 backtesting_oneday <- backtesting_function(data_oneday, results_oneday[,i], 1, 1-q[i])
-                                 backtesting_hday <- backtesting_function(data_hday, results_hday[,i], h, 1-q[i])
-                                 return(list(oneday = backtesting_oneday, hday = backtesting_hday))
+                                 backtesting_oneday <- backtesting_function(results_oneday[,i], data_oneday, 1, 1-q[i])
+                                 backtesting_hday <- backtesting_function(results_hday[,i], data_hday, h, 1-q[i])
+                                 return(list(oneday = backtesting_oneday, hday = list(v = backtesting_hday$v, ind = backtesting_hday$ind)))
                                })
   return(backtesting_results)
 }
