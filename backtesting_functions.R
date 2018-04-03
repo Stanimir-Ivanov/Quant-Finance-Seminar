@@ -110,7 +110,6 @@ backtesting_function <- function(VaR, data_1, h, q)
   unc_cov <- unconditional_coverage(violations_info$v, length(data_1), q)
   cc <- conditional_coverage(unc_cov$LR, ind$LR)
 
-  
   return(list(v = violations_info$v, uc = unc_cov$p, ind = ind$p, cc = cc$p))
 }
 ##----------------------------------------------------------------------------------------------------------##
