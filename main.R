@@ -11,6 +11,7 @@ source("read_and_transform.R") # read data
 source("garch_spec.R") # read garch specs
 source("backtesting_main.R")
 source("VaR.R")
+source("result_loader.R")
 
 q <- c(.95, .99, .995)
 h <- 10
