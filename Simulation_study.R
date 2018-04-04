@@ -22,4 +22,18 @@ mse <- sapply(try,FUN=function(try) {
   try<-t(as.data.frame(try))
   mse(try[,1],try[,2])
 })
-plot(mse)
+plot(mse,type="l",xlab="k",ylab="MSE(0.99quantile)")
+
+bias <- sapply(try,FUN=function(try) {
+  try<-t(as.data.frame(try))
+  #bias(try[,2],try[,1])
+  mean(try[,2]-try[,1])
+})
+plot(bias[20:length(bias)] ,type="l",xlab="k",ylab="Bias(0.99quantile)")
+#points(mse,bias, col="red", ylab="k")
+# par(mar=c(1,1,1,1))
+
+plot(bias,mse)
+bias_mse <-data.frame(cbind(bias,mse))
+
+
