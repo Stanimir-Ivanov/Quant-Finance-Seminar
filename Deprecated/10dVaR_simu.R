@@ -9,9 +9,11 @@ sp_garch_spec_n <- ugarchspec(variance.model = list(model = "sGARCH", garchOrder
 simu_sp_garch_n<-ugarchfit(spec =sp_garch_spec_n ,data = sp1[2:1002])
 
 inno_z <-simu_sp_garch_n@fit$z
-
+sort_z <-as.vector(sort(inno_z))
+sort_z <- sort_z[1:100]
 right_tail <-fevd(inno_z,type="GP",threshold= quantile(inno_z,0.9))
 left_tail <-fevd(-inno_z,type="GP",threshold= quantile(-inno_z,0.9))
+
 
 # list of random numbers with replacement
 random <- as.numeric(sample.int(1000,1000,replace=TRUE) )
@@ -30,7 +32,7 @@ left_excess <-function(left_tail)
   coef <- as.vector(left_tail$results$par)
   xi <-coef[2]
   beta <-coef[1]
-  left_y1 <- -rgpd(1, loc = 0, beta, xi)
+  left_y1 <- rgpd(1, loc = 0, beta, xi)
   return(left_y1)
 }
 
@@ -57,7 +59,7 @@ hdays_VaR_simulation <-function (n,inno_z)
       inno_z[m] <- right_thres + right_excess(right_tail)}
     
     if (inno_z[m] < left_thres)
-    { inno_z[m] <- left_thres + left_excess(left_tail)}
+    { inno_z[m] <- left_thres - left_excess(left_tail)}
   
   }
     return(inno_z)

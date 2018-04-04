@@ -30,7 +30,7 @@ counting_violations <- function(VaR, data_1)
 ##Calculate unconditional coverage.
 ##----------------------------------------------------------------------------------------------------------##
 unconditional_coverage <- function(n_violations, length_data, q)
-{
+{ # q is 1-VaR, 0.05,0.01,0.005
   T1 <- n_violations
   T0 <- length_data - n_violations
   pi_hat <- T1/length_data
