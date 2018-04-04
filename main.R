@@ -11,7 +11,6 @@ source("read_and_transform.R") # read data
 source("garch_spec.R") # read garch specs
 source("backtesting_main.R")
 source("VaR.R")
-source("result_loader.R")
 
 q <- c(.95, .99, .995)
 h <- 10
@@ -22,10 +21,10 @@ res_sp_garch <- VaR_estimation(specifications = spec$garch, data_1 = sp_data, q,
 res_sp_tgarch <- VaR_estimation(specifications = spec$tgarch, data_1 = sp_data, q, h, n) # Stan
 res_sp_egarch <- VaR_estimation(specifications = spec$egarch, data_1 = sp_data, q, h, n) # Stan
 
-# ing
-res_ing_garch <- VaR_estimation(specifications = spec$garch, data_1 = ing_data, q, h, n) # Stan
-res_ing_tgarch <- VaR_estimation(specifications = spec$tgarch, data_1 = ing_data, q, h, n) # Tommaso
-res_ing_egarch <- VaR_estimation(specifications = spec$egarch, data_1 = ing_data, q, h, n) # Tommaso	
+# gold
+res_gold_garch <- VaR_estimation(specifications = spec$garch, data_1 = gold_data, q, h, n) # Stan
+res_gold_tgarch <- VaR_estimation(specifications = spec$tgarch, data_1 = gold_data, q, h, n) # Tommaso
+res_gold_egarch <- VaR_estimation(specifications = spec$egarch, data_1 = gold_data, q, h, n) # Tommaso	
 
 # rds
 res_rds_garch <- VaR_estimation(specifications = spec$garch, data_1 = rds_data, q, h, n) # Tommaso
