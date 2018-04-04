@@ -24,7 +24,7 @@ res_sp_egarch <- VaR_estimation(specifications = spec$egarch, data_1 = sp_data, 
 # gold
 res_gold_garch <- VaR_estimation(specifications = spec$garch, data_1 = gold_data, q, h, n) # Stan
 res_gold_tgarch <- VaR_estimation(specifications = spec$tgarch, data_1 = gold_data, q, h, n) # Tommaso
-res_gold_egarch <- VaR_estimation(specifications = spec$egarch, data_1 = gold_data, q, h, n) # Tommaso	
+res_gold_egarch <- VaR_estimation(specifications = spec$egarch, data_1 = gold_data, q, h, n) # Thomas	
 
 # rds
 res_rds_garch <- VaR_estimation(specifications = spec$garch, data_1 = rds_data, q, h, n) # Tommaso
