@@ -37,9 +37,9 @@ res_aex_tgarch <- VaR_estimation(specifications = spec$tgarch, data_1 = aex_data
 res_aex_egarch <- VaR_estimation(specifications = spec$egarch, data_1 = aex_data, q, h, n) # Thomas
 
 # jpm
-res_jpm_garch <- VaR_estimation(specifications = spec$garch, data_1 = jpm_data, q, h, n) # 
-res_jpm_tgarch <- VaR_estimation(specifications = spec$tgarch, data_1 = jpm_data, q, h, n) # 
-res_jpm_egarch <- VaR_estimation(specifications = spec$egarch, data_1 = jpm_data, q, h, n) # 
+res_jpm_garch <- VaR_estimation(specifications = spec$garch, data_1 = jpm_data, q, h, n) # Tommaso
+res_jpm_tgarch <- VaR_estimation(specifications = spec$tgarch, data_1 = jpm_data, q, h, n) # Thomas
+res_jpm_egarch <- VaR_estimation(specifications = spec$egarch, data_1 = jpm_data, q, h, n) # Stan
 
 # bac
 res_bac_garch <- VaR_estimation(specifications = spec$garch, data_1 = bac_data, q, h, n) # 
