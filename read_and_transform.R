@@ -7,6 +7,9 @@ sp <- read.zoo("./Data/SP-500.csv", header = TRUE, sep = ",",format="%m/%d/%Y",i
 # ing <- read.zoo("./Data/ING.csv", header = TRUE, sep = ",",format="%Y/%m/%d",index.column = 1)
 rds <- read.zoo("./Data/RDS-B.csv", header = TRUE, sep = ",",format="%Y/%m/%d",index.column = 1)
 aex <- read.zoo("./Data/AEX.csv", header = TRUE, sep = ",",format="%m/%d/%Y",index.column = 1)
+jpm <- read.zoo("./Data/JPM.csv", header = TRUE, sep = ",",format="%m/%d/%Y",index.column = 1)
+bac <- read.zoo("./Data/BAC.csv", header = TRUE, sep = ",",format="%m/%d/%Y",index.column = 1)
+
 gold_raw <- Quandl("LBMA/GOLD", type = "xts")
 gold <- gold_raw$`GBP (PM`
 
