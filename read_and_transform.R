@@ -7,8 +7,8 @@ sp <- read.zoo("./Data/SP-500.csv", header = TRUE, sep = ",",format="%m/%d/%Y",i
 # ing <- read.zoo("./Data/ING.csv", header = TRUE, sep = ",",format="%Y/%m/%d",index.column = 1)
 rds <- read.zoo("./Data/RDS-B.csv", header = TRUE, sep = ",",format="%Y/%m/%d",index.column = 1)
 aex <- read.zoo("./Data/AEX.csv", header = TRUE, sep = ",",format="%m/%d/%Y",index.column = 1)
-jpm <- read.zoo("./Data/JPM.csv", header = TRUE, sep = ",",format="%m/%d/%Y",index.column = 1)
-bac <- read.zoo("./Data/BAC.csv", header = TRUE, sep = ",",format="%m/%d/%Y",index.column = 1)
+jpm <- read.zoo("./Data/JPM.csv", header = TRUE, sep = ",",format="%d/%m/%Y",index.column = 1)
+bac <- read.zoo("./Data/BAC.csv", header = TRUE, sep = ",",format="%d/%m/%Y",index.column = 1)
 
 gold_raw <- Quandl("LBMA/GOLD", type = "xts")
 gold <- gold_raw$`GBP (PM`
@@ -18,6 +18,8 @@ sp <- xts(sp)
 # ing <- xts(ing)
 aex <-xts(aex)
 rds <- xts(rds)
+jpm <-xts(jpm)
+bac <-xts(bac)
 
 # Negative log returns
 sp <- - 100*diff(log(sp))
@@ -25,6 +27,9 @@ sp <- - 100*diff(log(sp))
 rds<- - 100*diff(log(rds))
 aex<- - 100*diff(log(aex))
 gold <- - 100*diff(log(gold))
+jpm <- - 100*diff(log(jpm))
+bac<- - 100*diff(log(bac))
+
 
 # Data for use
 sp_data <- sp[2:length(sp)]
@@ -34,6 +39,10 @@ aex_data <- aex[2:length(aex)]
 aex_data <- aex_data[!is.na(aex_data)]
 gold_data <- gold[!is.na(gold)]
 gold_data <- gold_data[time(gold_data) >= '1971-01-01']
+jpm_data <- jpm[2:length(jpm)]
+bac_data <- bac[2:length(bac)]
+
+
 
 # Clean workspace
 remove(sp)
@@ -42,5 +51,7 @@ remove(aex)
 remove(gold)
 remove(rds)
 remove(gold_raw)
+remove(jpm)
+remove(bac)
 ##----------------------------------------------------------------------------------------------------------##
 ##----------------------------------------------------------------------------------------------------------##
