@@ -1,4 +1,4 @@
-retrieve_coefficient(estimation, coef_name)
+retrieve_coefficient <- function(estimation, coef_name)
 {
   coef_matrix <- estimation@model$coef
   counter <- c(1:length(coef_matrix))
